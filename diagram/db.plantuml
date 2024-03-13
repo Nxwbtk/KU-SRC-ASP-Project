@@ -1,0 +1,124 @@
+@startuml salesphere
+
+entity "User" as usr {
+	*user_id: string <<uuid>> [PK]
+	--
+	*email: string
+	*password: string
+	*first_name: string
+	*last_name: string
+	*role: string
+}
+
+entity "Staff" as staff {
+	*staff_id: string <<uuid>> [PK]
+	--
+	*user_id: string <<uuid>> [FK]
+}
+
+entity "Member" as member {
+	*member_id: string <<uuid>> [PK]
+	--
+	*user_id: string <<uuid>> [FK]
+}
+
+entity "Seller" as seller {
+	*seller_id: string <<uuid>> [PK]
+	--
+	*company_name: string
+	*company_address: string
+	*company_email: string
+	*company_phone: string
+	*company_website: string
+}
+
+entity "StaffMontlyLogin" as staff_monthly_login {
+	*staff_monthly_login_id: string <<uuid>> [PK]
+	--
+	*staff_id: string <<uuid>> [FK]
+	*login_date: date
+	*login_time: time
+	*logout_time: time
+}
+
+entity "StaffDailyLogin" as staff_daily_login {
+	*staff_daily_login_id: string <<uuid>> [PK]
+	--
+	*staff_id: string <<uuid>> [FK]
+	*login_time: time
+	*logout_time: time
+}
+
+entity "MemberBoughtProduct" as member_bought_product {
+	*member_bought_product_id: string <<uuid>> [PK]
+	--
+	*member_id: string <<uuid>> [FK]
+	*product_id: string <<uuid>> [FK]
+	*quantity: int
+	*total_price: double
+	*date_bought: date
+}
+
+entity "Product" as product {
+	*product_id: string <<uuid>> [PK]
+	--
+	*product_name: string
+	*product_description: string
+	*product_price: double
+	*product_amount: int
+}
+
+entity "SaleMonthlyReport" as sale_monthly_report {
+	*sale_monthly_report_id: string <<uuid>> [PK]
+	--
+	*month: int
+	*product_id: string <<uuid>> [FK]
+	*total_product_sold: int
+	*total_price: float
+}
+
+entity "SaleDailyReport" as sale_daily_report {
+	*sale_daily_report_id: string <<uuid>> [PK]
+	--
+	*day: int
+	*product_id: string <<uuid>> [FK]
+	*total_product_sold: int
+	*total_price: float
+}
+
+entity "BuyProductDaily" as buy_product_daily {
+	*buy_product_daily_id: string <<uuid>> [PK]
+	--
+	*day: int
+	*product_id: string <<uuid>> [FK]
+	*seller_id: string <<uuid>> [FK]
+	*total_product_buy: int
+	*total_price: float
+}
+
+entity "BuyProductMonthly" as buy_product_monthly {
+	*buy_product_monthly_id: string <<uuid>> [PK]
+	--
+	*month: int
+	*product_id: string <<uuid>> [FK]
+	*seller_id: string <<uuid>> [FK]
+	*total_product_buy: int
+	*total_price: float
+}
+
+usr ||--|| staff
+usr ||--|| member
+
+staff ||--|{ staff_monthly_login
+staff ||--|{ staff_daily_login
+
+product ||--|{ member_bought_product
+member ||--|{ member_bought_product
+
+product ||--|{ sale_monthly_report
+product ||--|{ sale_daily_report
+buy_product_daily }|--|| product
+buy_product_monthly }|--|| product
+seller }|--|| buy_product_daily
+seller }|--|| buy_product_monthly
+@enduml
