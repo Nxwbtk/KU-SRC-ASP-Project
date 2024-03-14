@@ -29,3 +29,5 @@ E:\KU-SRC-ASP-Project\SaleSphere\SaleSphere\obj\Debug\net8.0\refint\SaleSphere.d
 E:\KU-SRC-ASP-Project\SaleSphere\SaleSphere\obj\Debug\net8.0\SaleSphere.pdb
 E:\KU-SRC-ASP-Project\SaleSphere\SaleSphere\obj\Debug\net8.0\SaleSphere.genruntimeconfig.cache
 E:\KU-SRC-ASP-Project\SaleSphere\SaleSphere\obj\Debug\net8.0\ref\SaleSphere.dll
+E:\KU-SRC-ASP-Project\SaleSphere\SaleSphere\bin\Debug\net8.0\package-lock.json
+E:\KU-SRC-ASP-Project\SaleSphere\SaleSphere\bin\Debug\net8.0\package.json

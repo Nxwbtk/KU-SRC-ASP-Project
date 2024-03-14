@@ -15,7 +15,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SaleSphere")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+e4685660b9698155c50e2d2f063a5134809e95fc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2c8a80467b9e8e6e51b34ddb191efb4219351e55")]
 [assembly: System.Reflection.AssemblyProductAttribute("SaleSphere")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SaleSphere")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
