@@ -14,6 +14,14 @@
               "SubPath": "css/site.css"
             },
             "Patterns": null
+          },
+          "styles.css": {
+            "Children": null,
+            "Asset": {
+              "ContentRootIndex": 0,
+              "SubPath": "css/styles.css"
+            },
+            "Patterns": null
           }
         },
         "Asset": null,
