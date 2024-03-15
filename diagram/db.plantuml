@@ -1,124 +1,124 @@
 @startuml salesphere
 
+entity "Addresses" as addresses {
+	*address_id: string <<uuid>> [PK]
+	--
+	*user_id: string <<uuid>> [FK]
+	*user_address: string
+}
+
+entity "Roles" as roles {
+	*role_id: int [PK]
+	--
+	*role_name: string
+}
+
 entity "User" as usr {
-	*user_id: string <<uuid>> [PK]
+	*user_id: string <<uuid>> [PK] [FK]
 	--
 	*email: string
 	*password: string
 	*first_name: string
 	*last_name: string
-	*role: string
+	*role: int [FK]
 }
 
-entity "Staff" as staff {
-	*staff_id: string <<uuid>> [PK]
+entity "UserLog" as user_log {
+	*user_id: string <<uuid>> [PK]
 	--
-	*user_id: string <<uuid>> [FK]
+	*login_time: datetime
+	*logout_time: datetime
 }
 
-entity "Member" as member {
-	*member_id: string <<uuid>> [PK]
+entity "Sales" as sales {
+	*sale_id: string <<uuid>> [PK]
 	--
-	*user_id: string <<uuid>> [FK]
-}
-
-entity "Seller" as seller {
-	*seller_id: string <<uuid>> [PK]
-	--
-	*company_name: string
-	*company_address: string
-	*company_email: string
-	*company_phone: string
-	*company_website: string
-}
-
-entity "StaffMontlyLogin" as staff_monthly_login {
-	*staff_monthly_login_id: string <<uuid>> [PK]
-	--
-	*staff_id: string <<uuid>> [FK]
-	*login_date: date
-	*login_time: time
-	*logout_time: time
-}
-
-entity "StaffDailyLogin" as staff_daily_login {
-	*staff_daily_login_id: string <<uuid>> [PK]
-	--
-	*staff_id: string <<uuid>> [FK]
-	*login_time: time
-	*logout_time: time
-}
-
-entity "MemberBoughtProduct" as member_bought_product {
-	*member_bought_product_id: string <<uuid>> [PK]
-	--
-	*member_id: string <<uuid>> [FK]
 	*product_id: string <<uuid>> [FK]
-	*quantity: int
-	*total_price: double
-	*date_bought: date
+	*amount: int
+	*price: double
 }
 
-entity "Product" as product {
+entity "SalesLog" as sales_log {
+	*sale_id: string <<uuid>> [PK]
+	--
+	*user_id: string <<uuid>> [FK]
+	*date: datetime
+	*total_price: double
+}
+
+entity "Shipping" as shipping {
+	*shipping_id: string <<uuid>> [PK]
+	--
+	*address_id: string <<uuid>> [PK]
+	*shipping_code: string
+	*shipping_status: bool
+}
+
+entity "Vendor" as vendor {
+	*vendor_id: string <<uuid>> [PK]
+	--
+	*vendor_name: string
+	*vendor_address: string
+	*vendor_email: string
+	*vendor_phone: string
+	*vendor_website: string
+}
+
+entity "Stocks" as stocks {
 	*product_id: string <<uuid>> [PK]
 	--
+	*amount: int
+}
+
+entity "Products" as products {
+	*product_id: string <<uuid>> [PK] [FK]
+	--
+	*product_vendor_id: string <<uuid>> [FK]
 	*product_name: string
 	*product_description: string
 	*product_price: double
-	*product_amount: int
 }
 
-entity "SaleMonthlyReport" as sale_monthly_report {
-	*sale_monthly_report_id: string <<uuid>> [PK]
+
+entity "Buys" as buys {
+	*buy_id: string <<uuid>> [PK] [FK]
 	--
-	*month: int
 	*product_id: string <<uuid>> [FK]
-	*total_product_sold: int
-	*total_price: float
+	*amount: int
+	*price: double
+	*date: date
 }
 
-entity "SaleDailyReport" as sale_daily_report {
-	*sale_daily_report_id: string <<uuid>> [PK]
+entity "BuysLog" as buys_log {
+	*buy_id: string <<uuid>> [PK]
 	--
-	*day: int
-	*product_id: string <<uuid>> [FK]
-	*total_product_sold: int
-	*total_price: float
+	*vendor_id: string <<uuid>> [FK]
+	*date: datetime
+	*total_price: double
 }
 
-entity "BuyProductDaily" as buy_product_daily {
-	*buy_product_daily_id: string <<uuid>> [PK]
-	--
-	*day: int
-	*product_id: string <<uuid>> [FK]
-	*seller_id: string <<uuid>> [FK]
-	*total_product_buy: int
-	*total_price: float
-}
+roles ||--|| usr
+user_log }o--|| usr
+addresses }o--|| usr
 
-entity "BuyProductMonthly" as buy_product_monthly {
-	*buy_product_monthly_id: string <<uuid>> [PK]
-	--
-	*month: int
-	*product_id: string <<uuid>> [FK]
-	*seller_id: string <<uuid>> [FK]
-	*total_product_buy: int
-	*total_price: float
-}
+addresses ||--|{ sales_log
 
-usr ||--|| staff
-usr ||--|| member
+usr ||--o{ sales_log
 
-staff ||--|{ staff_monthly_login
-staff ||--|{ staff_daily_login
+sales_log ||--|{ sales
+sales_log ||--|| shipping
 
-product ||--|{ member_bought_product
-member ||--|{ member_bought_product
+vendor ||--|{ products
+vendor ||--|{ buys_log
 
-product ||--|{ sale_monthly_report
-product ||--|{ sale_daily_report
-buy_product_daily }|--|| product
-buy_product_monthly }|--|| product
-seller }|--|| buy_product_daily
-seller }|--|| buy_product_monthly
+buys_log ||--|{ buys
+
+
+products ||--|{ sales
+products ||--|{ buys
+products ||--|| stocks
+
+stocks ||--o{ sales
+stocks ||--|{ buys
+
 @enduml
