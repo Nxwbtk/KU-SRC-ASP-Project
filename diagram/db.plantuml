@@ -1,0 +1,124 @@
+@startuml salesphere
+
+entity "Addresses" as addresses {
+	*address_id: string <<uuid>> [PK]
+	--
+	*user_id: string <<uuid>> [FK]
+	*user_address: string
+}
+
+entity "Roles" as roles {
+	*role_id: int [PK]
+	--
+	*role_name: string
+}
+
+entity "User" as usr {
+	*user_id: string <<uuid>> [PK] [FK]
+	--
+	*email: string
+	*password: string
+	*first_name: string
+	*last_name: string
+	*role: int [FK]
+}
+
+entity "UserLog" as user_log {
+	*user_id: string <<uuid>> [PK]
+	--
+	*login_time: datetime
+	*logout_time: datetime
+}
+
+entity "Sales" as sales {
+	*sale_id: string <<uuid>> [PK]
+	--
+	*product_id: string <<uuid>> [FK]
+	*amount: int
+	*price: double
+}
+
+entity "SalesLog" as sales_log {
+	*sale_id: string <<uuid>> [PK]
+	--
+	*user_id: string <<uuid>> [FK]
+	*date: datetime
+	*total_price: double
+}
+
+entity "Shipping" as shipping {
+	*shipping_id: string <<uuid>> [PK]
+	--
+	*address_id: string <<uuid>> [PK]
+	*shipping_code: string
+	*shipping_status: bool
+}
+
+entity "Vendor" as vendor {
+	*vendor_id: string <<uuid>> [PK]
+	--
+	*vendor_name: string
+	*vendor_address: string
+	*vendor_email: string
+	*vendor_phone: string
+	*vendor_website: string
+}
+
+entity "Stocks" as stocks {
+	*product_id: string <<uuid>> [PK]
+	--
+	*amount: int
+}
+
+entity "Products" as products {
+	*product_id: string <<uuid>> [PK] [FK]
+	--
+	*product_vendor_id: string <<uuid>> [FK]
+	*product_name: string
+	*product_description: string
+	*product_price: double
+}
+
+
+entity "Buys" as buys {
+	*buy_id: string <<uuid>> [PK] [FK]
+	--
+	*product_id: string <<uuid>> [FK]
+	*amount: int
+	*price: double
+	*date: date
+}
+
+entity "BuysLog" as buys_log {
+	*buy_id: string <<uuid>> [PK]
+	--
+	*vendor_id: string <<uuid>> [FK]
+	*date: datetime
+	*total_price: double
+}
+
+roles ||--|| usr
+user_log }o--|| usr
+addresses }o--|| usr
+
+addresses ||--|{ sales_log
+
+usr ||--o{ sales_log
+
+sales_log ||--|{ sales
+sales_log ||--|| shipping
+
+vendor ||--|{ products
+vendor ||--|{ buys_log
+
+buys_log ||--|{ buys
+
+
+products ||--|{ sales
+products ||--|{ buys
+products ||--|| stocks
+
+stocks ||--o{ sales
+stocks ||--|{ buys
+
+@enduml
